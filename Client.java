@@ -37,7 +37,6 @@ public class Client{
                     str = in.readLine();
                     System.out.println(str);
                 }while(str.equals("LOOPEND"));
-                System.out.println(str);
             }
             out.println("END");
         } catch(InterruptedException e){
