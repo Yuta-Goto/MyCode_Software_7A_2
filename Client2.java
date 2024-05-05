@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-public class Client{
+public class Client2{
     private static int SERVER_PORT = 8080;
 
     private static int x,y;
@@ -20,26 +20,43 @@ public class Client{
                     new BufferedWriter(
                         new OutputStreamWriter(
                             socket.getOutputStream())),true);//送信バッファ設定
-            for(int i=0;i<5;i++){
-                x = i*10+1;
-                y = i*3 + 10;
-                Thread.sleep(1000);//1秒ごとに送信ｎ
+
+            //ログインしたときの1度きりのデータを送信
+
+            //ログイン時の1℃きりの受信
+
+            while(true){
+                Thread.sleep(20);//50分の1秒ごとに処理を行う。適宜値は変更する
+
+                //フロントエンドから今のデータを持ってくる
+
+                //ログアウト時にwhileを抜ける処理
+
                 
-                out.println(i+"回目の送信：");
-                //String str = in.readLine();
+                
+                //送信
+                out.println(1+"回目の送信：");
+                
                 out.println(x);
-                //x = Integer.valueOf(in.readLine());
+                
                 out.println(y);
-                //y = Integer.valueOf(in.readLine());
-                System.out.println(i+"回目の送信　by client");
-                String str;
-                do{
-                    str = in.readLine();
-                    System.out.println(str);
-                }while(str.equals("LOOPEND"));
+                
+                
+                
+               
+                //受信
+                String str = in.readLine();
+                x = Integer.valueOf(in.readLine());
+                y = Integer.valueOf(in.readLine());
+                str = in.readLine();
+                //フロントエンドに、受信した全プレイヤーのデータを渡す
                 System.out.println(str);
             }
+            //ログアウト時の適切な送信
             out.println("END");
+            //ログアウト時の適切な受信
+
+            
         } catch(InterruptedException e){
             //例外の時
             e.getStackTrace();

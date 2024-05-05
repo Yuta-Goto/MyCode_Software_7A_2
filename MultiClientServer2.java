@@ -2,18 +2,9 @@ import java.io.*;
 import java.net.*;
 //テストブランチテスト
 
-import javax.xml.crypto.Data;
-
-class DataHolder{
-    public static int[] players_x = new int[100];
-    public static int player_num = 0;
-}
-
-public class MultiClientServer{
+public class MultiClientServer2{
     private static int SERVER_PORT = 8080;
-    public static int[] players_x = new int[100];
-    public static int player_num = 0;
- 
+
     public static void main(String[] args) throws IOException{
         ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
         System.out.println("サーバ起動：serverSocket is "+serverSocket);
@@ -36,11 +27,6 @@ class ClientDealer extends Thread{
         this.socket = socket;
     }
 
-    private int my_max(int a,int b){
-        if(a>b) return a;
-        return b;
-    }
-
     public void run(){
         try{
             //送受信設定
@@ -54,29 +40,22 @@ class ClientDealer extends Thread{
                             new OutputStreamWriter(
                                 socket.getOutputStream())),true);//送信バッファの設定    
             String threadName = Thread.currentThread().getName();
-            int thread_num = (threadName.charAt(threadName.length()-1)-'0');
-
-            DataHolder.player_num = my_max(DataHolder.player_num, thread_num+1);
             //実際の送受信
             while(true){
                 Thread.sleep(1000);//1秒ごとに送信ｎ
-                System.out.println(thread_num);
+                
                 String str = in.readLine();
-                //out.println(str);
+                out.println(str);
                 
                 if(str.equals("END")) break;
-                
                 int x = Integer.valueOf(in.readLine());
-                //out.println(x);
-                DataHolder.players_x[thread_num] = x;
+                out.println(x);
+                
                 int y = Integer.valueOf(in.readLine());
-                //out.println(y);
-
-                for(int i=0;i<DataHolder.player_num;i++){
-                    System.out.println(str + "クライアント" + threadName + "　座標： (" + x + "," + y+ ")");
-                    out.println(str + " from SERVER!" + "　座標： (" + DataHolder.players_x[i] + "," + y+ ")");
-                }
-                out.println("LOOPEND");
+                out.println(y);
+                
+                System.out.println(str + "クライアント" + threadName + "　座標： (" + x + "," + y+ ")");
+                out.println(str + " from SERVER!" + "　座標： (" + x + "," + y+ ")");
             }
         
         } catch(IOException e){
