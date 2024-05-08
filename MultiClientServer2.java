@@ -1,3 +1,5 @@
+//古いバージョン。MultiClientServerが最新
+
 import java.io.*;
 import java.net.*;
 //テストブランチテスト

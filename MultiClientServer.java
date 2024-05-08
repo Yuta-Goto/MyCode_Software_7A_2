@@ -1,11 +1,13 @@
+//ConnectToServer.javaに対応
 import java.io.*;
 import java.net.*;
 //テストブランチテスト
 
-import javax.xml.crypto.Data;
+//import javax.xml.crypto.Data;
 
-class DataHolder{
+class ServerDataHolder{
     public static int[] players_x = new int[100];
+    
     public static int player_num = 0;
 }
 
@@ -56,28 +58,41 @@ class ClientDealer extends Thread{
             String threadName = Thread.currentThread().getName();
             int thread_num = (threadName.charAt(threadName.length()-1)-'0');
 
-            DataHolder.player_num = my_max(DataHolder.player_num, thread_num+1);
-            //実際の送受信
-            while(true){
-                Thread.sleep(1000);//1秒ごとに送信ｎ
-                System.out.println(thread_num);
-                String str = in.readLine();
-                //out.println(str);
-                
-                if(str.equals("END")) break;
-                
-                int x = Integer.valueOf(in.readLine());
-                //out.println(x);
-                DataHolder.players_x[thread_num] = x;
-                int y = Integer.valueOf(in.readLine());
-                //out.println(y);
+            ServerDataHolder.player_num = my_max(ServerDataHolder.player_num, thread_num+1);
 
-                for(int i=0;i<DataHolder.player_num;i++){
+
+
+
+            //ログインしたときの1度きりのデータを受信    Ryosuke
+
+            //ログイン時の1度きりの送信(あれば)   Ryosuke
+
+            while(true){
+                //1秒ごとに送信
+                Thread.sleep(1000);
+
+                //(スレッド番号の確認) 
+                System.out.println(thread_num);
+
+                //ログアウトしてるかどうかの文字列受信 Ryosuke
+                String str = in.readLine();
+                if(str.equals("END")) break;
+
+
+                //Clientから受信 Yuta
+                int x = Integer.valueOf(in.readLine());
+  
+                ServerDataHolder.players_x[thread_num] = x;
+                int y = Integer.valueOf(in.readLine());
+
+                //Clientへ送信 Yuta
+                for(int i=0;i<ServerDataHolder.player_num;i++){
                     System.out.println(str + "クライアント" + threadName + "　座標： (" + x + "," + y+ ")");
-                    out.println(str + " from SERVER!" + "　座標： (" + DataHolder.players_x[i] + "," + y+ ")");
+                    out.println(str + " from SERVER!" + "　座標： (" + ServerDataHolder.players_x[i] + "," + y+ ")");
                 }
                 out.println("LOOPEND");
             }
+            //ログアウト時の適切な送信(あれば) Ryosuke
         
         } catch(IOException e){
             e.printStackTrace();

@@ -23,6 +23,7 @@ public class Client{
             for(int i=0;i<5;i++){
                 x = i*10+1;
                 y = i*3 + 10;
+                
                 Thread.sleep(1000);//1秒ごとに送信ｎ
                 
                 out.println(i+"回目の送信：");

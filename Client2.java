@@ -9,7 +9,10 @@ public class Client2{
     public static void main(String[] args) throws IOException{
         InetAddress addr = InetAddress.getByName("192.168.56.1");
         Socket socket = new Socket(addr,SERVER_PORT);
+
+
         try{
+            //ソケット通信の前処理
             System.out.println("socket = " + socket);
             BufferedReader in =
                 new BufferedReader(
@@ -21,30 +24,32 @@ public class Client2{
                         new OutputStreamWriter(
                             socket.getOutputStream())),true);//送信バッファ設定
 
-            //ログインしたときの1度きりのデータを送信
 
-            //ログイン時の1℃きりの受信
+
+            //ログインしたときの1度きりのデータを送信    Ryosuke
+
+            //ログイン時の1度きりの受信(あれば)   Ryosuke
 
             while(true){
-                Thread.sleep(20);//50分の1秒ごとに処理を行う。適宜値は変更する
+                //50分の1秒ごとに処理を行う。適宜値は変更する
+                Thread.sleep(20);
 
-                //フロントエンドから今のデータを持ってくる
+                //フロントエンドから今のデータを持ってくる Yuta(Avatorの情報) & Ryosuke(ログアウト情報)
 
-                //ログアウト時にwhileを抜ける処理
+
+                //ログアウト時にはwhileを抜ける処理  Ryosuke
 
                 
                 
-                //送信
+                //サーバへ送信 Yuta
                 out.println(1+"回目の送信：");
                 
                 out.println(x);
                 
                 out.println(y);
                 
-                
-                
-               
-                //受信
+
+                //サーバから受信 Yuta
                 String str = in.readLine();
                 x = Integer.valueOf(in.readLine());
                 y = Integer.valueOf(in.readLine());
@@ -52,9 +57,9 @@ public class Client2{
                 //フロントエンドに、受信した全プレイヤーのデータを渡す
                 System.out.println(str);
             }
-            //ログアウト時の適切な送信
+            //ログアウト時の適切な送信  Ryosuke
             out.println("END");
-            //ログアウト時の適切な受信
+            //ログアウト時の適切な受信(あれば)  Ryosuke
 
             
         } catch(InterruptedException e){
