@@ -8,16 +8,21 @@ class LocalDataHolder{
     public static int player_num = 0;
 
     //Avator(自分)の変数配列
+    public static String[] players_message = new String[100];
     public static int[] players_x = new int[100];
-
+    public static int[] players_y = new int[100];
     //PersonList(他の人たちのリスト一式)
     
 }
 
 
 //サーバーへの接続まで担当。
-public class ConnectToServer{
+class ClientMain{
     private static int SERVER_PORT = 8080;
+
+    public ClientMain(){
+        
+    }
 
     public void ConnectAndStart() throws IOException{
         InetAddress addr = InetAddress.getByName("192.168.56.1");
@@ -65,10 +70,11 @@ class Client extends Thread{
 
             while(true){
                 //50分の1秒ごとに処理を行う。適宜値は変更する
-                Thread.sleep(20);
+                Thread.sleep(1000);
 
                 //フロントエンドから今のデータを持ってくる Yuta(Avatorの情報) & Ryosuke(ログアウト情報)
-
+                x = i*10;
+                y = i;
 
                 //ログアウト時にはwhileを抜ける処理  Ryosuke
                 //ログアウト処理ができるまで一時的に5回でwhileを抜けるようにしてる(何かしら抜ける処理がないとerror)
@@ -80,18 +86,29 @@ class Client extends Thread{
 
 
                 //サーバへ送信 Yuta
-                out.println(1+"回目の送信：");
+                out.println(i+"回目の送信");
                 out.println(x);
                 out.println(y);
 
                 //サーバから受信 Yuta
-                String str = in.readLine();
-                x = Integer.valueOf(in.readLine());
-                y = Integer.valueOf(in.readLine());
-                str = in.readLine();
+                // String str = in.readLine();
+                // x = Integer.valueOf(in.readLine());
+                // y = Integer.valueOf(in.readLine());
+                // str = in.readLine();
+                String str;
+                int p = 0;
+                do{
+                    LocalDataHolder.players_message[p] = in.readLine();
+                    LocalDataHolder.players_x[p] = Integer.valueOf(in.readLine());
+                    LocalDataHolder.players_y[p] = Integer.valueOf(in.readLine());
+                    str = in.readLine();
+                    p++;
+                }while(str.equals("LOOPNOW"));
 
                 //フロントエンドに、受信した全プレイヤーのデータを渡す Yuta
-                System.out.println(str);
+                for(int k=0;k<p;k++){
+                    System.out.println(k + " message:" + LocalDataHolder.players_message[k] + " x:" + LocalDataHolder.players_x[k] + " y:" + LocalDataHolder.players_y[k]+ " ");
+                }
             }
             //ログアウト時の適切な送信  Ryosuke
             out.println("END");

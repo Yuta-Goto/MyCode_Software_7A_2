@@ -7,6 +7,8 @@ import java.net.*;
 
 class ServerDataHolder{
     public static int[] players_x = new int[100];
+    public static int[] players_y = new int[100];
+    public static String[] players_message = new String[100];
     
     public static int player_num = 0;
 }
@@ -75,20 +77,27 @@ class ClientDealer extends Thread{
                 System.out.println(thread_num);
 
                 //ログアウトしてるかどうかの文字列受信 Ryosuke
-                String str = in.readLine();
-                if(str.equals("END")) break;
+                String str_login_check = in.readLine();
+                if(str_login_check.equals("END")) break;
 
 
                 //Clientから受信 Yuta
+                String message = in.readLine();
+                ServerDataHolder.players_message[thread_num] = message;
                 int x = Integer.valueOf(in.readLine());
-  
                 ServerDataHolder.players_x[thread_num] = x;
+
                 int y = Integer.valueOf(in.readLine());
+                ServerDataHolder.players_y[thread_num] = y;
 
                 //Clientへ送信 Yuta
                 for(int i=0;i<ServerDataHolder.player_num;i++){
-                    System.out.println(str + "クライアント" + threadName + "　座標： (" + x + "," + y+ ")");
-                    out.println(str + " from SERVER!" + "　座標： (" + ServerDataHolder.players_x[i] + "," + y+ ")");
+                    System.out.println(message + "クライアント" + threadName + "　座標： (" + x + "," + y+ ")");
+                    //out.println(str + " from SERVER!" + "　座標： (" + ServerDataHolder.players_x[i] + "," + y+ ")");
+                    out.println(ServerDataHolder.players_message[i]);
+                    out.println(ServerDataHolder.players_x[i]);
+                    out.println(ServerDataHolder.players_y[i]);
+                    if(i!= ServerDataHolder.player_num-1) out.println("LOOPNOW");// 最後以外はこの一文を送っておく(ループ中だよの合図)
                 }
                 out.println("LOOPEND");
             }
