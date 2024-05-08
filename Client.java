@@ -31,7 +31,7 @@ public class Client{
                 //x = Integer.valueOf(in.readLine());
                 out.println(y);
                 //y = Integer.valueOf(in.readLine());
-                System.out.println(i+"回目の送信　by client");
+                //System.out.println(i+"回目の送信　by client");
                 String str;
                 do{
                     str = in.readLine();
